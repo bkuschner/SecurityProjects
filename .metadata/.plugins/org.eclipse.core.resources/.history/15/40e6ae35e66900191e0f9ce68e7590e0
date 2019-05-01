@@ -1,12 +1,5 @@
 import javafx.util.Pair;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Random;
 
 public class main {
@@ -57,7 +50,7 @@ public class main {
      * stress tests isValid function. prints time to check test cases
      * @param count number of test cases to run
      */
-    public static void stressTest(int count, boolean logging) {
+    public static void stressTest(int count) {
         int minLength = 5;
         int maxLength = 20;
         int nextLength;
@@ -84,49 +77,11 @@ public class main {
         long endTime = System.nanoTime();
         long duration = (endTime - startTime);
         System.out.println("time to check: " + duration + " nanoseconds");
-        
-        if(logging) {
-	        PrintWriter myWriter = null;
-	        try {
-	        	myWriter = new PrintWriter("log.txt", "UTF-8");
-	        	for (int i = 0; i < testCases.length; ++i) {
-	        		myWriter.println(testCases[i] + ": " + testResults[i]);
-	        	}
-	        } catch (FileNotFoundException e) {
-	        	e.printStackTrace();
-	        } catch (UnsupportedEncodingException e) {
-	        	e.printStackTrace();
-	        } finally {
-	        	myWriter.close();
-	        }
-        }
     }
     
     public static void main(String[] args) {
-    	Properties myProperties = new Properties();
-    	FileInputStream input = null;
-    	boolean logging = false;
-    	try {
-    		input = new FileInputStream("/Users/benjaminkuschner/Documents/SecurityProjects/PasswordVerifier/src/config.properties");
-    		myProperties.load(input);
-    		if(myProperties.getProperty("logging").equals("true"))
-				logging = true;
-    		else
-    			logging = false;
-    	} catch (IOException ex) {
-    		ex.printStackTrace();
-    	} finally {
-    		if (input != null) {
-    			try {
-    				input.close();
-    			} catch(IOException e ) {
-    				e.printStackTrace();
-    			}
-    		}
-    	}
-    	
         correctnessTest();
-        stressTest(1000, logging);
+        stressTest(1000);
     }
 
 }
