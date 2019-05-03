@@ -58,8 +58,8 @@ public class main {
      * @param count number of test cases to run
      */
     public static void stressTest(int count, boolean logging) {
-        final int minLength = 5;
-        final int maxLength = 20;
+        int minLength = 5;
+        int maxLength = 20;
         int nextLength;
         char nextChar;
         char[] nextString;
@@ -127,8 +127,6 @@ public class main {
     	
         correctnessTest();
         stressTest(1000, logging);
-        
-        utils.createUser("user1", "!CRime#226");
     }
 
 }

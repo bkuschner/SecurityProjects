@@ -1,10 +1,7 @@
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutput;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 
 public class utils {
@@ -62,43 +59,25 @@ public class utils {
 	 */
 	public static void createUser (String uname, String pwd) {
 		FileInputStream in = null;
-		ObjectInputStream myInStream = null;
-		FileOutputStream out = null;
-		ObjectOutput myOutStream = null;		
+		ObjectInputStream myStream = null;
 		ArrayList<User> users = null;
-		
 		try {
 			in = new FileInputStream("users.txt");
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 		try {
-			myInStream = new ObjectInputStream(in);
+			myStream = new ObjectInputStream(in);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		try {
-			users = (ArrayList<User>) myInStream.readObject();
+			users = (ArrayList<User>) myStream.readObject();
 		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		users.add(new User(uname, pwd));
-		
-		try {
-			out = new FileOutputStream("users.txt");
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
-		try {
-			myOutStream = new ObjectOutputStream(out);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		try {
-			myOutStream.writeObject(users);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 }

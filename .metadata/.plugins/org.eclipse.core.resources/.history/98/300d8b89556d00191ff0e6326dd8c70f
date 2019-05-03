@@ -67,6 +67,7 @@ public class utils {
 		ObjectOutput myOutStream = null;		
 		ArrayList<User> users = null;
 		
+		if()
 		try {
 			in = new FileInputStream("users.txt");
 		} catch (FileNotFoundException e) {
