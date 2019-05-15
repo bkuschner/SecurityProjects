@@ -56,7 +56,6 @@ public class utils {
 	}
 	
 	/*
-	 * currently not used - can ignore 
 	 * stores a username and password pair
 	 * @param uname username
 	 * @param pwd password

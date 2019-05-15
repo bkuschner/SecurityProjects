@@ -127,6 +127,8 @@ public class main {
     	
         correctnessTest();
         stressTest(1000, logging);
+        
+        utils.createUser("user1", "!CRime#226");
     }
 
 }
