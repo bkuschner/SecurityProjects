@@ -55,9 +55,12 @@ public class main {
 
     /*
      * stress tests isValid function. prints time to check test cases
+     * this method takes logging as a parameter to avoid having to retrieve
+     * information from the config file
      * @param count number of test cases to run
+     * @param loggingEnabled writes results to log if true
      */
-    public static void stressTest(int count, boolean logging) {
+    public static void stressTest(int count, boolean loggingEnabled) {
         final int minLength = 5;
         final int maxLength = 20;
         int nextLength;
@@ -77,6 +80,8 @@ public class main {
             testCases[i] = new String(nextString);
         }
         
+        //nanoTime() instead of currentTimeMillis() is used for higher precision
+        //since relationship to actual system time is not needed
         long startTime = System.nanoTime();
         for (int i = 0; i < testCases.length; ++i) {
             testResults[i] = utils.isValid(testCases[i]);
@@ -85,7 +90,7 @@ public class main {
         long duration = (endTime - startTime);
         System.out.println("time to check: " + duration + " nanoseconds");
         
-        if(logging) {
+        if(loggingEnabled) {
 	        PrintWriter myWriter = null;
 	        try {
 	        	myWriter = new PrintWriter("log.txt", "UTF-8");
@@ -93,6 +98,7 @@ public class main {
 	        		myWriter.println(testCases[i] + ": " + testResults[i]);
 	        	}
 	        } catch (FileNotFoundException e) {
+	        	System.out.println("could not find log.txt");
 	        	e.printStackTrace();
 	        } catch (UnsupportedEncodingException e) {
 	        	e.printStackTrace();
@@ -103,16 +109,17 @@ public class main {
     }
     
     public static void main(String[] args) {
+    	final int stressIterations = 1000;
     	Properties myProperties = new Properties();
     	FileInputStream input = null;
-    	boolean logging = false;
+    	boolean loggingEnabled = false;
     	try {
     		input = new FileInputStream("/Users/benjaminkuschner/Documents/SecurityProjects/PasswordVerifier/src/config.properties");
     		myProperties.load(input);
-    		if(myProperties.getProperty("logging").equals("true"))
-				logging = true;
+    		if(myProperties.getProperty("loggingEnabled").equals("true"))
+				loggingEnabled = true;
     		else
-    			logging = false;
+    			loggingEnabled = false;
     	} catch (IOException ex) {
     		ex.printStackTrace();
     	} finally {
@@ -125,8 +132,13 @@ public class main {
     		}
     	}
     	
-        correctnessTest();
-        stressTest(1000, logging);
+        boolean correctness = correctnessTest();
+        if (correctness)
+        	System.out.println("correct");
+        else
+        	System.out.println("incorrect");
+        
+        stressTest(stressIterations, loggingEnabled);
     }
 
 }
